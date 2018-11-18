@@ -12,30 +12,32 @@ def main():
 
     args = parser.parse_args()
 
+    input_path = args.input
+    output_path = args.output
+
+    crop_fasta(input_path, output_path)
+
+
+def crop_fasta(input_path, output_path):
     # read in the path to the input fasta as list object
     try:
-        fasta_to_crop = read_file_to_list(args.input)
+        fasta_to_crop = read_file_to_list(input_path)
     except:
         sys.exit('error reading in the aligned fasta')
-
     # input_path = '{}/test_fastas/tester_aligned.fasta'.format(os.getcwd())
     # output_path = '{}/test_fastas/tester_aligned_cropped.fasta'.format(os.getcwd())
     # try:
     #     fasta_to_crop = read_file_to_list(input_path)
     # except:
     #     sys.exit('error reading in the aligned fasta')
-
     # create a df from the fasta
     fasta_as_pandas_df = fasta_to_pandas_df(fasta_as_list=fasta_to_crop)
-
     # crop the df
     cropped_fasta_as_df = crop_aligned_fasta_df(aligned_fasta_as_pandas_df_to_crop=fasta_as_pandas_df)
-
     # convert the df back to list object ready to write out
     cropped_fasta_list = pandas_df_to_fasta(cropped_fasta_df=cropped_fasta_as_df)
-
     # now write out the corpped fasta list
-    write_list_as_file_to_path(cropped_fasta_list, args.output)
+    write_list_as_file_to_path(cropped_fasta_list, output_path)
 
 
 def read_file_to_list(filename):
